@@ -1,0 +1,37 @@
+{
+  "name": "doekenorg/psr-6-middleware",
+  "description": "An experimental middleware decorator for a PSR-6 cache pool",
+  "keywords": [
+    "PSR-6",
+    "cache item",
+    "cache pool",
+    "middleware"
+  ],
+  "authors": [
+    {
+      "name": "Doeke Norg",
+      "homepage": "https://doeken.org",
+      "email": "mail@doeken.org",
+      "role": "Developer"
+    }
+  ],
+  "readme": "README.md",
+  "license": "MIT",
+  "require": {
+    "psr/cache": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "DoekeNorg\\Psr6Middleware\\": "src/"
+    }
+  },
+  "require-dev": {
+    "cache/array-adapter": "^1.2",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DoekeNorg\\Psr6Middleware\\Tests\\": "tests/"
+    }
+  }
+}

@@ -1,5 +1,7 @@
 # PSR-6 Cache Middleware
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/doekenorg/cache-middleware.svg?style=flat-square)](https://packagist.org/packages/doekenorg/cache-middleware)
+
 This is an experimental package that provides middleware for any [PSR-6 cache pool](https://www.php-fig.org/psr/psr-6/).
 
 ## Usage

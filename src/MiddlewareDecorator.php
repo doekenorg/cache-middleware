@@ -15,7 +15,7 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
 
     /**
      * Array of middleware stacks.
-     * @var \SplStack[]
+     * @var array
      */
     private array $middleware;
 
@@ -28,10 +28,6 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
     public function __construct(CacheItemPoolInterface $pool, iterable $middleware = [])
     {
         $this->pool = $pool;
-        foreach (self::$interfaces as $interface) {
-            $this->middleware[$interface] = new \SplStack();
-        }
-
         $this->addMiddleware(...$middleware);
     }
 
@@ -60,24 +56,20 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
 
     public function save(CacheItemInterface $item)
     {
-        $action = fn($item) => $this->pool->save($item);
-
-        foreach ($this->getMiddlewares(MiddlewareSaveInterface::class) as $middleware) {
-            $action = fn($item) => $middleware->processSave($item, $action);
-        }
-
-        return $action($item);
+        return (new MiddlewareHandler(
+            $this->getMiddlewares(MiddlewareSaveInterface::class),
+            'processSave',
+            fn(CacheItemInterface $item) => $this->pool->save($item)
+        ))->handle($item);
     }
 
     public function getItem($key)
     {
-        $action = fn(string $key) => $this->pool->getItem($key);
-
-        foreach ($this->getMiddlewares(MiddlewareGetInterface::class) as $middleware) {
-            $action = fn(string $key) => $middleware->processGet($key, $action);
-        }
-
-        return $action($key);
+        return (new MiddlewareHandler(
+            $this->getMiddlewares(MiddlewareGetInterface::class),
+            'processGet',
+            fn(string $key) => $this->pool->getItem($key),
+        ))->handle($key);
     }
 
     public function getItems(array $keys = [])
@@ -93,13 +85,11 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
 
     public function deleteItem($key)
     {
-        $action = fn(string $key) => $this->pool->deleteItem($key);
-
-        foreach ($this->getMiddlewares(MiddlewareDeleteInterface::class) as $middleware) {
-            $action = fn(string $key) => $middleware->processDelete($key, $action);
-        }
-
-        return $action($key);
+        return (new MiddlewareHandler(
+            $this->getMiddlewares(MiddlewareDeleteInterface::class),
+            'processDelete',
+            fn(string $key) => $this->pool->deleteItem($key),
+        ))->handle($key);
     }
 
     public function deleteItems(array $keys)
@@ -116,13 +106,11 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
 
     public function saveDeferred(CacheItemInterface $item)
     {
-        $action = fn($item) => $this->pool->saveDeferred($item);
-
-        foreach ($this->getMiddlewares(MiddlewareSaveInterface::class) as $middleware) {
-            $action = fn($item) => $middleware->processSave($item, $action);
-        }
-
-        return $action($item);
+        return (new MiddlewareHandler(
+            $this->getMiddlewares(MiddlewareSaveInterface::class),
+            'processSave',
+            fn(CacheItemInterface $item) => $this->pool->saveDeferred($item),
+        ))->handle($item);
     }
 
     public function hasItem($key)
@@ -143,11 +131,11 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
     /**
      * @template T
      * @param class-string<T> $interface
-     * @return \SplStack|T[]
+     * @return T[]
      */
-    private function getMiddlewares(string $interface): \SplStack
+    private function getMiddlewares(string $interface): array
     {
-        return $this->middleware[$interface];
+        return $this->middleware[$interface] ?? [];
     }
 
     public function __call($name, $arguments)

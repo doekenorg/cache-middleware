@@ -5,8 +5,8 @@ This is an experimental package that provides middleware for any [PSR-6 cache po
 ## Usage
 
 To apply middlewares you decorate your PSR-6 cache pool with the `DoekeNorg\CacheMiddleware\MiddlewareDecorator`. The
-constructor of the decorator receives the decorated cache pool, as well as an optional list of middleware classes. 
-You can also add more middlewares by calling the `addMiddleware(...$middlewares)` method on the decorator.
+constructor of the decorator receives the decorated cache pool, as well as an optional list of middleware classes. You
+can also add more middlewares by calling the `addMiddleware(...$middlewares)` method on the decorator.
 
 ```php
 use DoekeNorg\CacheMiddleware\MiddlewareCachePool;
@@ -62,8 +62,8 @@ This package is a fun experiment to see if the middleware pattern can be useful 
 under development, and the implementation can change during the non-stable phase. As long as this is a `0.*.*` release
 consider every *minor* change as a *major* update.
 
-**Warning:** While it is possible to change the cache keys of the methods I do not recommend this in the middleware. 
-Use it to update the cache item (adding tags, deleting other items for a given key, etc.).
+**Warning:** While it is possible to change the cache keys of the methods I do not recommend this in the middleware. Use
+it to update the cache item (adding tags, deleting other items for a given key, etc.).
 
 **Caveat:** To trigger the middlewares on all items in combination with `getItems()` and `deleteItems()` these functions
 do *NOT* call these functions on the decorated cache pool, but rather call `getItem()` and `deleteItem()` multiple times

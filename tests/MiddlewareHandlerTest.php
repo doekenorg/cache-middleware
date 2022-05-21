@@ -1,8 +1,8 @@
 <?php
 
-namespace DoekeNorg\Psr6Middleware\Tests;
+namespace DoekeNorg\CacheMiddleware\Tests;
 
-use DoekeNorg\Psr6Middleware\MiddlewareHandler;
+use DoekeNorg\CacheMiddleware\MiddlewareHandler;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareHandlerTest extends TestCase

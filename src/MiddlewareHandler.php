@@ -1,6 +1,6 @@
 <?php
 
-namespace DoekeNorg\Psr6Middleware;
+namespace DoekeNorg\CacheMiddleware;
 
 final class MiddlewareHandler
 {

@@ -1,28 +1,29 @@
 <?php
 
-namespace DoekeNorg\Psr6Middleware\Tests;
+namespace DoekeNorg\CacheMiddleware\Tests;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use DoekeNorg\Psr6Middleware\MiddlewareDecorator;
-use DoekeNorg\Psr6Middleware\MiddlewareDeleteInterface;
-use DoekeNorg\Psr6Middleware\MiddlewareGetInterface;
-use DoekeNorg\Psr6Middleware\MiddlewareSaveInterface;
+use DoekeNorg\CacheMiddleware\MiddlewareCachePool;
+use DoekeNorg\CacheMiddleware\MiddlewareDeleteInterface;
+use DoekeNorg\CacheMiddleware\MiddlewareGetInterface;
+use DoekeNorg\CacheMiddleware\MiddlewareSaveInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**
- * Unit tests for {@see MiddlewareDecorator}
+ * Unit tests for {@see MiddlewareCachePool}
  */
-final class MiddlewareDecoratorTest extends TestCase
+final class MiddlewareCachePoolTest extends TestCase
 {
     private TestArrayCachePool $array_pool;
-    private MiddlewareDecorator $decorator;
+
+    private MiddlewareCachePool $decorator;
 
     protected function setUp(): void
     {
         $this->array_pool = new TestArrayCachePool();
-        $this->decorator = new MiddlewareDecorator($this->array_pool);
+        $this->decorator = new MiddlewareCachePool($this->array_pool);
     }
 
     public function testGetItem(): void
@@ -100,7 +101,7 @@ final class MiddlewareDecoratorTest extends TestCase
     public function testDeleteItem(): void
     {
         $cache_mock = $this->createMock(CacheItemPoolInterface::class);
-        $decorator = new MiddlewareDecorator($cache_mock, [
+        $decorator = new MiddlewareCachePool($cache_mock, [
             new TestMiddlewareSave('one', 'delete'),
             new TestMiddlewareSave('two', 'delete'),
         ]);
@@ -117,7 +118,7 @@ final class MiddlewareDecoratorTest extends TestCase
     public function testDeleteItems(): void
     {
         $cache_mock = $this->createMock(CacheItemPoolInterface::class);
-        $decorator = new MiddlewareDecorator($cache_mock, [
+        $decorator = new MiddlewareCachePool($cache_mock, [
             new TestMiddlewareSave('one', 'delete'),
             new TestMiddlewareSave('two', 'delete'),
         ]);
@@ -133,7 +134,7 @@ final class MiddlewareDecoratorTest extends TestCase
 
     public function testHasItem(): void
     {
-        $decorator = new MiddlewareDecorator($this->array_pool);
+        $decorator = new MiddlewareCachePool($this->array_pool);
         $item = $decorator->getItem('test');
         self::assertFalse($decorator->hasItem('test'));
         $decorator->save($item);
@@ -142,7 +143,7 @@ final class MiddlewareDecoratorTest extends TestCase
 
     public function testClear(): void
     {
-        $decorator = new MiddlewareDecorator($this->array_pool);
+        $decorator = new MiddlewareCachePool($this->array_pool);
         $decorator->save($decorator->getItem('test'));
         self::assertTrue($decorator->hasItem('test'));
         $decorator->clear();
@@ -151,7 +152,7 @@ final class MiddlewareDecoratorTest extends TestCase
 
     public function testCommit(): void
     {
-        $decorator = new MiddlewareDecorator($this->array_pool);
+        $decorator = new MiddlewareCachePool($this->array_pool);
         $decorator->saveDeferred($decorator->getItem('test'));
         self::assertFalse($decorator->hasItem('test'));
         self::assertTrue($decorator->commit());

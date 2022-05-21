@@ -1,11 +1,11 @@
 <?php
 
-namespace DoekeNorg\Psr6Middleware;
+namespace DoekeNorg\CacheMiddleware;
 
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
-final class MiddlewareDecorator implements CacheItemPoolInterface
+final class MiddlewareCachePool implements CacheItemPoolInterface
 {
     private static array $interfaces = [
         MiddlewareGetInterface::class,
@@ -72,10 +72,15 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
         ))->handle($key);
     }
 
+    /**
+     * @inheritDoc
+     *
+     * Note: does not call the inner `getItems()`.
+     */
     public function getItems(array $keys = [])
     {
-        // Todo, should work; but ideally it should somehow use parent::getItems for the values.
         $result = [];
+
         foreach ($keys as $key) {
             $result[$key] = $this->getItem($key);
         }
@@ -92,6 +97,11 @@ final class MiddlewareDecorator implements CacheItemPoolInterface
         ))->handle($key);
     }
 
+    /**
+     * @inheritDoc
+     *
+     * Note: does not call the inner `deleteItems()`.
+     */
     public function deleteItems(array $keys)
     {
         $result = true;

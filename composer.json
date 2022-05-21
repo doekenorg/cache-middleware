@@ -1,5 +1,5 @@
 {
-  "name": "doekenorg/psr-6-middleware",
+  "name": "doekenorg/cache-middleware",
   "description": "An experimental middleware decorator for a PSR-6 cache pool",
   "keywords": [
     "PSR-6",
@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "DoekeNorg\\Psr6Middleware\\": "src/"
+      "DoekeNorg\\CacheMiddleware\\": "src/"
     }
   },
   "require-dev": {
@@ -31,7 +31,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "DoekeNorg\\Psr6Middleware\\Tests\\": "tests/"
+      "DoekeNorg\\CacheMiddleware\\Tests\\": "tests/"
     }
   }
 }

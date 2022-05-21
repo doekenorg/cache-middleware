@@ -69,3 +69,11 @@ Use it to update the cache item (adding tags, deleting other items for a given k
 do *NOT* call these functions on the decorated cache pool, but rather call `getItem()` and `deleteItem()` multiple times
 on the decorator. This technically makes this decorator a proxy, but practically it still is a decorator. Just note that
 if you need the inner methods called, this package probably isn't for you, and you should use a custom decorator.
+
+## Changelog
+
+Please see the [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
